@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# builds
+dist/
+build/
+.next/
+out/
+.nest/
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# env
+.env
+.env.local
+.env.*.local
+
+# prisma
+packages/database/prisma/dev.db*
+packages/database/*.db
+
+# misc
+coverage/
+*.log
+.DS_Store
+.gradle/
+*.cer
+expo-env.d.ts
+.expo/
+web-build/
+.e2e-run/

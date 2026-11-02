@@ -1,0 +1,389 @@
+// WealthOS Prisma schema
+// Money: integers in paise everywhere (never floats).
+// Dates: timestamps in UTC. Dates without time are @db.Date.
+// PII: phone numbers and PAN are stored AES-256-GCM encrypted (phoneEnc/panEnc column)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  ADVISOR
+  CLIENT
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum AdvisorTier {
+  BRONZE
+  SILVER
+  GOLD
+}
+
+enum AssetType {
+  MUTUAL_FUND
+  EQUITY
+  BOND
+  FIXED_DEPOSIT
+  INSURANCE
+}
+
+enum TransactionType {
+  BUY
+  SELL
+  SIP
+  SWITCH
+}
+
+enum TransactionStatus {
+  PENDING
+  EXECUTED
+  FAILED
+}
+
+enum KycState {
+  INITIATED
+  PAN_VALIDATED
+  DIGILOCKER_SYNCED
+  AADHAAR_ESIGNED
+  VIDEO_KYC_PENDING
+  COMPLETED
+}
+
+enum KycEventKind {
+  STATE_TRANSITION
+  ADAPTER_CALLBACK
+}
+
+enum CommissionKind {
+  UPFRONT
+  TRAIL
+}
+
+enum SipStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  COMPLETED
+}
+
+enum SipInstanceStatus {
+  SCHEDULED
+  EXECUTED
+  FAILED
+  MISSED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+  LOST
+}
+
+enum CasUploadStatus {
+  PROCESSING
+  SUCCESS
+  PARTIAL
+  FAILED
+}
+
+enum BasketRisk {
+  LOW
+  MODERATE
+  HIGH
+}
+
+model User {
+  id           String      @id @default(uuid())
+  email        String      @unique
+  passwordHash String
+  fullName     String
+  // AES-256-GCM ciphertext of phone number; raw phone never persisted.
+  phoneEnc     String?
+  role         Role        @default(CLIENT)
+  status       UserStatus  @default(ACTIVE)
+  tier         AdvisorTier @default(BRONZE)
+  // Owning advisor for CLIENT users (null = direct platform client)
+  advisorId    String?
+  advisor      User?       @relation("AdvisorClients", fields: [advisorId], references: [id], onDelete: SetNull)
+  clients      User[]      @relation("AdvisorClients")
+  partnerProfile PartnerProfile?
+  kyc          KycRecord?
+  portfolio    Portfolio[]
+  transactions Transaction[]
+  sips         Sip[]
+  commissionsEarned Commission[] @relation("AdvisorCommissions")
+  commissionsPaid    Commission[] @relation("ClientCommissions")
+  goals        Goal[]
+  casUploads   CasUpload[]
+  segments     Segment[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([advisorId])
+}
+
+model PartnerProfile {
+  id              String  @id @default(uuid())
+  userId          String  @unique
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username        String  @unique
+  orgName         String
+  tagline         String?
+  bio             String?
+  photoUrl        String?
+  website         String?
+  specialties     String[] @default([])
+  yearsExperience Int     @default(0)
+  active          Boolean @default(true)
+  leads           Lead[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Lead {
+  id        String         @id @default(uuid())
+  profile   PartnerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+  name      String
+  // AES-256-GCM ciphertext; decrypted only for the owning advisor.
+  phoneEnc  String
+  email     String?
+  message   String?
+  status    LeadStatus     @default(NEW)
+  createdAt DateTime       @default(now())
+
+  @@index([profileId, status])
+}
+
+model KycRecord {
+  id                  String      @id @default(uuid())
+  user                User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String      @unique
+  state               KycState    @default(INITIATED)
+  panEnc              String?
+  panMasked           String?
+  digilockerDocId     String?
+  aadhaarEsignRef     String?
+  videoKycRef         String?
+  videoKycScheduledAt DateTime?
+  rejectionReason     String?
+  events              KycEvent[]
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+}
+
+model KycEvent {
+  id        String       @id @default(uuid())
+  kyc       KycRecord    @relation(fields: [kycId], references: [id], onDelete: Cascade)
+  kycId     String
+  kind      KycEventKind @default(STATE_TRANSITION)
+  fromState String?
+  toState   String?
+  meta      Json?
+  createdAt DateTime     @default(now())
+
+  @@index([kycId])
+}
+
+model Asset {
+  id           String   @id @default(uuid())
+  slug         String   @unique
+  name         String
+  type         AssetType
+  schemeCode   String   @unique
+  issuer       String
+  category     String?
+  navPaise     Int
+  navUpdatedAt DateTime @default(now())
+  navHistory   NavHistory[]
+  portfolio    Portfolio[]
+  transactions Transaction[]
+  sips         Sip[]
+  basketItems  BasketItem[]
+  createdAt    DateTime @default(now())
+}
+
+model NavHistory {
+  id       String @id @default(uuid())
+  asset    Asset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  assetId  String
+  date     DateTime @db.Date
+  navPaise Int
+
+  @@unique([assetId, date])
+  @@index([assetId, date])
+}
+
+// One row per (user, asset) — the spec's "Portfolio" entity with holdings and AUM
+model Portfolio {
+  id              String    @id @default(uuid())
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  asset           Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  assetId         String
+  units           Decimal   @default(0) @db.Decimal(24, 8)
+  avgNavPaise     Int       @default(0)
+  investedPaise   Int       @default(0)
+  realizedPaise   Int       @default(0)
+  firstPurchaseAt DateTime?
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([userId, assetId])
+  @@index([userId])
+}
+
+model Transaction {
+  id             String            @id @default(uuid())
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  asset          Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  assetId        String
+  type           TransactionType
+  amountPaise    Int
+  units          Decimal           @db.Decimal(24, 8)
+  navPaise       Int
+  status         TransactionStatus @default(EXECUTED)
+  idempotencyKey String?           @unique
+  executedAt     DateTime?
+  createdAt      DateTime          @default(now())
+  commissions    Commission[]
+  sipDebitFrom   SipInstance?
+
+  @@index([userId, createdAt])
+  @@index([assetId])
+}
+
+model Sip {
+  id                 String         @id @default(uuid())
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String
+  asset              Asset          @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  assetId            String
+  monthlyAmountPaise Int
+  intervalsPerMonth  Int            @default(1)
+  scheduledDays      Int[]
+  status             SipStatus      @default(ACTIVE)
+  startOn            DateTime       @db.Date
+  endOn              DateTime?      @db.Date
+  nextRunOn          DateTime?      @db.Date
+  instances          SipInstance[]
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([status, nextRunOn])
+}
+
+model SipInstance {
+  id            String           @id @default(uuid())
+  sip           Sip              @relation(fields: [sipId], references: [id], onDelete: Cascade)
+  sipId         String
+  scheduledFor  DateTime         @db.Date
+  amountPaise   Int
+  status        SipInstanceStatus @default(SCHEDULED)
+  transaction   Transaction?     @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+  transactionId String?          @unique
+
+  @@unique([sipId, scheduledFor])
+}
+
+model Commission {
+  id            String       @id @default(uuid())
+  advisor       User         @relation("AdvisorCommissions", fields: [advisorId], references: [id], onDelete: Cascade)
+  advisorId     String
+  client        User         @relation("ClientCommissions", fields: [clientId], references: [id], onDelete: Cascade)
+  clientId      String
+  transaction   Transaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+  transactionId String?
+  assetType     AssetType
+  kind          CommissionKind
+  rateBps       Int
+  amountPaise   Int
+  // "T:<transactionId>" for upfront rows, "M:<yyyy-MM>" for trail rows;
+  // makes (advisorId, periodKey) a natural idempotency key.
+  periodKey     String
+  createdAt     DateTime     @default(now())
+
+  @@unique([advisorId, periodKey])
+  @@index([advisorId, createdAt])
+}
+
+model Goal {
+  id                       String @id @default(uuid())
+  user                     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                   String
+  name                     String
+  targetAmountPaise        Int
+  horizonMonths            Int
+  expectedAnnualReturnBps  Int
+  recommendedMonthlyPaise  Int
+  startDate                DateTime @db.Date
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Basket {
+  id          String    @id @default(uuid())
+  slug        String    @unique
+  name        String
+  description String
+  category    String
+  riskLevel   BasketRisk
+  items       BasketItem[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model BasketItem {
+  id              String @id @default(uuid())
+  basket          Basket @relation(fields: [basketId], references: [id], onDelete: Cascade)
+  basketId        String
+  asset           Asset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  assetId         String
+  targetWeightPct Int
+
+  @@unique([basketId, assetId])
+}
+
+model Segment {
+  id          String  @id @default(uuid())
+  owner       User    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     String
+  name        String
+  description String?
+  // Segment filter AST in JSON form (shared-types SegmentRuleAst)
+  rule        Json
+  createdAt   DateTime @default(now())
+
+  @@index([ownerId])
+}
+
+model CasUpload {
+  id                   String          @id @default(uuid())
+  user                 User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String
+  fileName             String
+  sizeBytes            Int
+  parserVersion        String
+  status               CasUploadStatus @default(PROCESSING)
+  transactionsImported Int             @default(0)
+  duplicatesSkipped    Int             @default(0)
+  errorDetails         Json?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  @@index([userId])
+}

@@ -1,0 +1,42 @@
+{
+  "name": "@wealthos/database",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Prisma schema, migrations, seed data for WealthOS",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "prebuild": "prisma generate",
+    "build": "tsc -p tsconfig.src.json",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint prisma/seed.ts src/",
+    "test": "echo \"no unit tests in database package\" && exit 0",
+    "prisma": "prisma",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.16",
+    "@prisma/client": "^6.6.0",
+    "@wealthos/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "prisma": "^6.6.0",
+    "reflect-metadata": "^0.2.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,0 +1,16 @@
+packages:
+  - apps/*
+  - packages/*
+
+allowBuilds:
+  esbuild: true
+  prisma: true
+  '@prisma/client': true
+  '@prisma/engines': true
+  '@prisma/engines-postinstall': true
+  sharp: true
+  unrs-resolver: true
+  '@nestjs/core': true
+  bcrypt: true
+  msgpackr-extract: true
+
