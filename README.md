@@ -5,6 +5,7 @@ WealthOS is a monorepo for wealth management and investment operations, with an 
 ## Repository layout
 
 - `apps/backend-api` - NestJS API for the WealthOS domain engine
+- `apps/website` - Static marketing website for WealthOS
 - `apps/partner-dashboard` - Next.js partner dashboard, available on port 3000
 - `apps/investor-portal` - Next.js investor portal, available on port 3001
 - `apps/mobile-app` - React Native application built with Expo
@@ -57,6 +58,7 @@ pnpm dev
 
 The local service URLs are:
 
+- Marketing website: `http://localhost:3002`
 - API: `http://localhost:4000/api/v1`
 - Partner dashboard: `http://localhost:3000`
 - Investor portal: `http://localhost:3001`
