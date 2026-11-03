@@ -26,6 +26,8 @@ export interface EnqueuedJob {
 
 export interface JobQueuePort {
   enqueue<TPayload>(queueName: string, payload: TPayload, opts?: EnqueueOptions): Promise<EnqueuedJob>;
+  readiness(): Promise<void>;
+  close(): Promise<void>;
 }
 
 const logger = new Logger('InMemoryQueueAdapter');
@@ -47,6 +49,15 @@ export class InMemoryQueueAdapter implements JobQueuePort {
     }, delay);
     this.timers.set(id, timer);
     return { id, name: queueName };
+  }
+
+  async readiness(): Promise<void> {
+    return Promise.resolve();
+  }
+
+  async close(): Promise<void> {
+    for (const timer of this.timers.values()) clearTimeout(timer);
+    this.timers.clear();
   }
 }
 
@@ -87,6 +98,16 @@ export class RedisQueueAdapter implements JobQueuePort {
       removeOnFail: 5000,
     });
     return { id: job.id?.toString(), name: queueName };
+  }
+
+  readiness(): Promise<void> {
+    const queue = this.queue('__wealthos_health__');
+    return queue.client.then(() => undefined);
+  }
+
+  async close(): Promise<void> {
+    await Promise.all([...this.queues.values()].map((queue) => queue.close()));
+    this.queues.clear();
   }
 }
 

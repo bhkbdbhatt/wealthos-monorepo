@@ -12,6 +12,9 @@ export interface AppConfig {
   piiEncryptionKey: string;
   corsOrigins: string[];
   kycMockMode: boolean;
+  requestBodyLimit: string;
+  requestTimeoutMs: number;
+  shutdownTimeoutMs: number;
 }
 
 export const CONFIG_KEYS = {
@@ -25,6 +28,9 @@ export const CONFIG_KEYS = {
   piiEncryptionKey: 'PII_ENCRYPTION_KEY',
   corsOrigins: 'CORS_ORIGIN',
   kycMockMode: 'KYC_MOCK_MODE',
+  requestBodyLimit: 'REQUEST_BODY_LIMIT',
+  requestTimeoutMs: 'REQUEST_TIMEOUT_MS',
+  shutdownTimeoutMs: 'SHUTDOWN_TIMEOUT_MS',
 } as const;
 
 function required(env: NodeJS.ProcessEnv, key: string): string {
@@ -67,6 +73,8 @@ export function readAppConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     }
   }
   const corsRaw = env[CONFIG_KEYS.corsOrigins] ?? 'http://localhost:3000,http://localhost:3001';
+  const requestTimeoutMs = positiveInteger(env[CONFIG_KEYS.requestTimeoutMs], 30000, CONFIG_KEYS.requestTimeoutMs);
+  const shutdownTimeoutMs = positiveInteger(env[CONFIG_KEYS.shutdownTimeoutMs], 30000, CONFIG_KEYS.shutdownTimeoutMs);
   return {
     port,
     nodeEnv: nodeEnvRaw as AppConfig['nodeEnv'],
@@ -78,7 +86,19 @@ export function readAppConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     piiEncryptionKey: piiKey,
     corsOrigins: corsRaw.split(',').map((s) => s.trim()).filter(Boolean),
     kycMockMode: (env[CONFIG_KEYS.kycMockMode] ?? 'true') === 'true',
+    requestBodyLimit: env[CONFIG_KEYS.requestBodyLimit] ?? '1mb',
+    requestTimeoutMs,
+    shutdownTimeoutMs,
   };
+}
+
+function positiveInteger(value: string | undefined, fallback: number, key: string): number {
+  if (value === undefined || value === '') return fallback;
+  const parsed = Number(value);
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) {
+    throw new Error(`${key} must be a positive integer`);
+  }
+  return parsed;
 }
 
 /** ConfigModule factory hook. */

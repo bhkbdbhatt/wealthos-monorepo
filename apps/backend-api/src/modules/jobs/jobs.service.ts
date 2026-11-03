@@ -1,7 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { PrismaService } from '@wealthos/database';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { CommissionsService } from '../commissions/commissions.service';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { SipsService } from '../sips/sips.service';
 
 export interface SipCronResult {
@@ -29,6 +32,8 @@ interface AmfiResponse {
 export class JobsService {
   private readonly logger = new Logger(JobsService.name);
   private navRefreshRunning = false;
+  private sipSweepRunning = false;
+  private trailRunRunning = false;
 
   constructor(
     private readonly prisma: PrismaService,
@@ -39,25 +44,34 @@ export class JobsService {
   /** @param todayIso optional date override for manual replays. */
   @Cron(CronExpression.EVERY_DAY_AT_6AM, { name: 'daily-sip-sweep' })
   async runDailySips(todayIso?: string): Promise<SipCronResult> {
-    const result: SipCronResult = { executed: 0, missed: 0, failed: 0 };
-    const due = await this.sips.dueInstanceIds(todayIso);
-    for (const instanceId of due) {
-      try {
-        const outcome = await this.sips.executeInstance(instanceId);
-        if (outcome.status === 'EXECUTED') result.executed++;
-        else if (outcome.status === 'MISSED') result.missed++;
-        else result.failed++;
-      } catch (error) {
-        result.failed++;
-        this.logger.error(
-          `SIP instance ${instanceId} failed: ${error instanceof Error ? error.message : 'unknown'}`,
-        );
-      }
+    if (this.sipSweepRunning) {
+      this.logger.warn('SIP sweep already running; skipping overlapping invocation');
+      return { executed: 0, missed: 0, failed: 0 };
     }
-    this.logger.log(
-      `SIP sweep: executed=${result.executed} missed=${result.missed} failed=${result.failed}`,
-    );
-    return result;
+    this.sipSweepRunning = true;
+    const result: SipCronResult = { executed: 0, missed: 0, failed: 0 };
+    try {
+      const due = await this.sips.dueInstanceIds(todayIso);
+      for (const instanceId of due) {
+        try {
+          const outcome = await this.sips.executeInstance(instanceId);
+          if (outcome.status === 'EXECUTED') result.executed++;
+          else if (outcome.status === 'MISSED') result.missed++;
+          else result.failed++;
+        } catch (error) {
+          result.failed++;
+          this.logger.error(
+            `SIP instance ${instanceId} failed: ${error instanceof Error ? error.name : 'unknown error'}`,
+          );
+        }
+      }
+      this.logger.log(
+        `SIP sweep: executed=${result.executed} missed=${result.missed} failed=${result.failed}`,
+      );
+      return result;
+    } finally {
+      this.sipSweepRunning = false;
+    }
   }
 
   /**
@@ -66,10 +80,19 @@ export class JobsService {
    */
   @Cron('0 2 1 * *', { name: 'monthly-trail-commission' })
   async runMonthlyTrail(monthIso?: string): Promise<number> {
+    if (this.trailRunRunning) {
+      this.logger.warn('Trail commission run already running; skipping overlapping invocation');
+      return 0;
+    }
+    this.trailRunRunning = true;
     const month = monthIso ?? previousMonthIso();
-    const written = await this.commissions.runMonthlyTrail(month);
-    this.logger.log(`Trail commission pass for ${month}: ${written} rows`);
-    return written;
+    try {
+      const written = await this.commissions.runMonthlyTrail(month);
+      this.logger.log(`Trail commission pass for ${month}: ${written} rows`);
+      return written;
+    } finally {
+      this.trailRunRunning = false;
+    }
   }
 
   /** Refresh NAVs for every imported mutual fund with a numeric AMFI scheme code. */
