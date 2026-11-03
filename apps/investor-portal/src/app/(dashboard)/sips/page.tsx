@@ -179,7 +179,7 @@ export default function SipsPage() {
                     <tr key={sip.id}>
                       <Td>{sip.asset.name}</Td>
                       <Td className="tabular-nums">{formatMoney(sip.monthlyAmountPaise)}</Td>
-                      <Td>{sip.intervalsPerMonth}x / days {sip.scheduledDays.join(', ')}</Td>
+                      <Td>{sip.intervalsPerMonth}x / days {(sip.scheduledDays ?? []).join(', ') || '-'}</Td>
                       <Td>{formatDate(sip.nextRunOn)}</Td>
                       <Td>
                         <Badge tone={STATUS_TONES[sip.status]}>{label(sip.status)}</Badge>

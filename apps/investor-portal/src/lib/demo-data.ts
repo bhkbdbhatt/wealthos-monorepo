@@ -16,8 +16,8 @@ export function investorDemoData(path: string): unknown | null {
     { id: 'goal-2', name: 'Europe holiday', targetAmountPaise: 1000000000, horizonMonths: 18, expectedAnnualReturnBps: 850, currentValuePaise: 326000000, recommendedMonthlyPaise: 3570000, progressPct: 32.6, achieved: false },
   ];
   if (path === '/sips') return [
-    { id: 'sip-1', name: 'Nifty 50 SIP', asset: { slug: 'nifty-50-index-fund', name: 'Nifty 50 Index Fund' }, amountPaise: 2500000, dayOfMonth: 5, intervalsPerMonth: 1, status: 'ACTIVE', nextExecutionAt: '2026-12-05T09:00:00Z' },
-    { id: 'sip-2', name: 'Balanced wealth SIP', asset: { slug: 'quality-equity-fund', name: 'Quality Equity Fund' }, amountPaise: 1500000, dayOfMonth: 12, intervalsPerMonth: 1, status: 'ACTIVE', nextExecutionAt: '2026-12-12T09:00:00Z' },
+    { id: 'sip-1', asset: { id: 'asset-1', slug: 'nifty-50-index-fund', name: 'Nifty 50 Index Fund', type: 'MUTUAL_FUND' }, monthlyAmountPaise: 2500000, intervalsPerMonth: 1, scheduledDays: [5], status: 'ACTIVE', startOn: '2026-01-05', endOn: null, nextRunOn: '2026-12-05' },
+    { id: 'sip-2', asset: { id: 'asset-2', slug: 'quality-equity-fund', name: 'Quality Equity Fund', type: 'MUTUAL_FUND' }, monthlyAmountPaise: 1500000, intervalsPerMonth: 1, scheduledDays: [12], status: 'ACTIVE', startOn: '2026-03-12', endOn: null, nextRunOn: '2026-12-12' },
   ];
   if (path === '/baskets') return [
     { id: 'basket-1', name: 'Core Wealth', slug: 'core-wealth', description: 'A diversified foundation for long-term compounding.', category: 'Core', riskLevel: 'MODERATE', items: [{ asset: { id: 'asset-1', slug: 'nifty-50-index-fund', name: 'Nifty 50 Index Fund', type: 'MUTUAL_FUND' }, targetWeightPct: 50 }, { asset: { id: 'asset-2', slug: 'quality-equity-fund', name: 'Quality Equity Fund', type: 'MUTUAL_FUND' }, targetWeightPct: 30 }, { asset: { id: 'asset-3', slug: 'india-short-bond-fund', name: 'India Short Bond Fund', type: 'BOND' }, targetWeightPct: 20 }] },
