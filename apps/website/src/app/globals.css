@@ -58,7 +58,7 @@ h1 em, h2 em { color: #6d877d; font-weight: 400; }
 .chart-card, .activity-card { min-height: 250px; background: white; border-radius: 5px; padding: 16px; overflow: hidden; }
 .card-title { display: flex; justify-content: space-between; font-size: 10px; font-weight: 600; }
 .card-title small { color: #89978f; font-weight: 400; }
-.chart { height: 205px; display: flex; align-items: end; background: repeating-linear-gradient(to bottom, transparent 0, transparent 49px, #edf0ee 50px); }
+.chart { height: 205px; display: flex; align-items: flex-end; background: repeating-linear-gradient(to bottom, transparent 0, transparent 49px, #edf0ee 50px); }
 .chart svg { width: 100%; }
 .chart .area { fill: url(#area); }
 .chart .line { fill: none; stroke: #35d49a; stroke-width: 4px; }
