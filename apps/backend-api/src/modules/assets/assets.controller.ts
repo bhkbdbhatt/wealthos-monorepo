@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { type AssetDto, AssetType, UserRole } from '@wealthos/shared-types';
+import { type AssetDto, UserRole } from '@wealthos/shared-types';
 import { Roles } from '../../core/roles.decorator';
 import {
-  CreateAssetDto,
-  ListAssetsQuery,
-  UpsertNavDto,
+  type CreateAssetDto,
+  type ListAssetsQuery,
+  type UpsertNavDto,
 } from './assets.dto';
-import { AssetsService } from './assets.service';
+import { type AssetsService } from './assets.service';
 
 /** Asset catalogue endpoints. Admins maintain; everyone else consumes. */
 @Controller('assets')

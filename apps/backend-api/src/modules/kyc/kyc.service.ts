@@ -4,17 +4,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import type { PrismaKycRecord } from './kyc.types';
-import { PrismaService } from '@wealthos/database';
+import { type Prisma } from '@prisma/client';
+import { type PrismaService } from '@wealthos/database';
 import { KycState, type KycEventKind } from '@wealthos/shared-types';
 import { applyKycEvent } from '../../domain/kyc-state-machine';
-import { PiiCipher } from '../../core/pii-cipher';
+import { type PiiCipher } from '../../core/pii-cipher';
+import type { PrismaKycRecord } from './kyc.types';
 import {
-  AadhaarEsignAdapter,
-  DigiLockerAdapter,
-  PanValidationAdapter,
-  VideoKycAdapter,
+  type AadhaarEsignAdapter,
+  type DigiLockerAdapter,
+  type PanValidationAdapter,
+  type VideoKycAdapter,
 } from './kyc.ports';
 
 /** Prisma KycRecord row alias (decoupled from $Enums strings). */

@@ -1,5 +1,5 @@
+import { type KycState, type UserRole, type UserStatus } from '../enums';
 import type { IsoTimestamp, Json } from './api';
-import { KycState, UserRole, UserStatus } from '../enums';
 
 export interface JwtPayload {
   sub: string;

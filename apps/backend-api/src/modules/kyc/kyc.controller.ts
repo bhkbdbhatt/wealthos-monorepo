@@ -5,7 +5,7 @@ import { IsOptional, IsString, Matches } from 'class-validator';
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Public } from '../../core/public.decorator';
 import { Roles } from '../../core/roles.decorator';
-import { KycService } from './kyc.service';
+import { type KycService } from './kyc.service';
 
 export class ValidatePanDto {
   @IsString()

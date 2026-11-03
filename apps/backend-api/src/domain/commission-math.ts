@@ -5,7 +5,7 @@
  * Rates come from the shared COMMISSION_RATE_BPS table (bps).
  */
 import { COMMISSION_RATE_BPS } from '@wealthos/shared-types';
-import { AssetType, CommissionKind, type AdvisorTierName } from '@wealthos/shared-types';
+import { type AssetType, CommissionKind, type AdvisorTierName } from '@wealthos/shared-types';
 
 export interface CommissionComputation {
   kind: CommissionKind;

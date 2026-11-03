@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '@wealthos/database';
+import { type PrismaService } from '@wealthos/database';
 import {
   LeadStatus,
   UserRole,
@@ -14,7 +14,7 @@ import {
 } from '@wealthos/shared-types';
 import { JOB_QUEUE_TOKEN } from '../../core/queue/queue.providers';
 import { QUEUE_NAMES, type JobQueuePort } from '../../core/queue/queue.port';
-import { PiiCipher } from '../../core/pii-cipher';
+import { type PiiCipher } from '../../core/pii-cipher';
 import { type CaptureLeadDto, type UpsertPartnerProfileDto } from './partners.dto';
 
 interface ProfileRow {

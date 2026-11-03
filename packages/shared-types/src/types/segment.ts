@@ -1,4 +1,4 @@
-import type { IsoTimestamp, Json } from './api';
+import type { IsoTimestamp } from './api';
 
 /**
  * Segment filter AST — a boolean tree over client attributes.

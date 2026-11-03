@@ -1,6 +1,6 @@
-import { PiiCipher } from '../../core/pii-cipher';
 import type { Prisma } from '@prisma/client';
 import type { UserDto } from '@wealthos/shared-types';
+import { type PiiCipher } from '../../core/pii-cipher';
 
 type UserRow = Prisma.UserGetPayload<object>;
 

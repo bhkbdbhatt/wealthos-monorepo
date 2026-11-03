@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { type Prisma } from '@prisma/client';
-import { PrismaService } from '@wealthos/database';
+import { type PrismaService } from '@wealthos/database';
 import {
   UserRole,
   type SegmentDto,

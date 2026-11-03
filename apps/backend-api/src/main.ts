@@ -5,9 +5,9 @@
  * Global prefix /api/v1, ValidationPipe, error envelope, CORS.
  */
 import 'reflect-metadata';
-import { dotenv } from './startup/dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { dotenv } from './startup/dotenv';
 import { AppModule } from './app.module';
 import { ApiErrorFilter } from './core/filters/api-error.filter';
 import { readAppConfig } from './core/app-config';

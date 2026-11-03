@@ -1,4 +1,4 @@
-import { KycState, type KycEventKind } from '@wealthos/shared-types';
+import { type KycState, type KycEventKind } from '@wealthos/shared-types';
 
 export interface PrismaKycRecord {
   id: string;

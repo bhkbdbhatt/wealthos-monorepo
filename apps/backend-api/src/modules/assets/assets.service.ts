@@ -1,6 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '@wealthos/database';
-import { AssetType } from '@wealthos/shared-types';
+import { type PrismaService } from '@wealthos/database';
+import { type AssetType } from '@wealthos/shared-types';
 
 /** Slugs are url-safe; scheme codes are unique per regulation. */
 export interface UpsertAssetInput {

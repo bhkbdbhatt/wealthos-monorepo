@@ -9,12 +9,12 @@ import { CurrentUser } from '../../core/current-user.decorator';
 import { Public } from '../../core/public.decorator';
 import { Roles } from '../../core/roles.decorator';
 import {
-  CaptureLeadDto,
-  ListLeadsQuery,
-  UpdateLeadStatusDto,
-  UpsertPartnerProfileDto,
+  type CaptureLeadDto,
+  type ListLeadsQuery,
+  type UpdateLeadStatusDto,
+  type UpsertPartnerProfileDto,
 } from './partners.dto';
-import { PartnersService } from './partners.service';
+import { type PartnersService } from './partners.service';
 
 @Controller('partners')
 export class PartnersController {

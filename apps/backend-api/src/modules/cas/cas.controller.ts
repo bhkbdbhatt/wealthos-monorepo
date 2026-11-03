@@ -17,7 +17,7 @@ import {
 import { IsOptional, IsUUID } from 'class-validator';
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Roles } from '../../core/roles.decorator';
-import { CasService, type CasPdfFile, type CasUploadSummary } from './cas.service';
+import { type CasService, type CasPdfFile, type CasUploadSummary } from './cas.service';
 
 export class UploadCasBody {
   @IsOptional()

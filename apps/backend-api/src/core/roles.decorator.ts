@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { UserRole } from '@wealthos/shared-types';
+import { type UserRole } from '@wealthos/shared-types';
 
 export const ROLES_KEY = 'wealthos:roles';
 

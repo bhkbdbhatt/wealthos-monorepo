@@ -1,5 +1,5 @@
+import { type AssetType, type SipStatus, type TransactionStatus, type TransactionType } from '../enums';
 import type { IsoDate, IsoTimestamp, Paginated } from './api';
-import { AssetType, SipStatus, TransactionStatus, TransactionType } from '../enums';
 
 export interface AssetDto {
   id: string;

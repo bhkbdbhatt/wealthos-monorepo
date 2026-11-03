@@ -3,7 +3,7 @@ import { type JwtPayload } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
 import { Public } from '../../core/public.decorator';
-import { AuthService } from './auth.service';
+import { type AuthService } from './auth.service';
 import { type AuthSessionDto, type ClientRegisterDto, type LoginDto, type RefreshDto } from './auth.dto';
 
 @Controller('auth')

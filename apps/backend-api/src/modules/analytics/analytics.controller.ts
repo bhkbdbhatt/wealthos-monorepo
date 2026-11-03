@@ -6,7 +6,7 @@ import {
 } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Roles } from '../../core/roles.decorator';
-import { AnalyticsService } from './analytics.service';
+import { type AnalyticsService } from './analytics.service';
 
 @Controller('analytics')
 @Roles(UserRole.ADVISOR, UserRole.ADMIN)

@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { IsOptional, IsString, Matches } from 'class-validator';
 import { UserRole } from '@wealthos/shared-types';
 import { Roles } from '../../core/roles.decorator';
-import { JobsService, type NavRefreshResult, type SipCronResult } from './jobs.service';
+import { type JobsService, type NavRefreshResult, type SipCronResult } from './jobs.service';
 
 export class RunSipCronDto {
   @IsOptional()

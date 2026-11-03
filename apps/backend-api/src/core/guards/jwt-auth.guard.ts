@@ -1,7 +1,7 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { type CanActivate, type ExecutionContext, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { type JwtService } from '@nestjs/jwt';
 import { UserRole } from '@wealthos/shared-types';
-import { Reflector } from '@nestjs/core';
+import { type Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../public.decorator';
 import { ROLES_KEY } from '../roles.decorator';
 

@@ -14,7 +14,7 @@ import {
 import { Type } from 'class-transformer';
 import { type JwtPayload, type SipDto } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
-import { SipsService } from './sips.service';
+import { type SipsService } from './sips.service';
 
 export class CreateSipDto {
   @IsString()

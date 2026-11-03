@@ -1,4 +1,4 @@
-import { AssetType } from '../enums';
+import { type AssetType } from '../enums';
 import type { IsoDate } from './api';
 
 export interface AnalyticsTimePoint {

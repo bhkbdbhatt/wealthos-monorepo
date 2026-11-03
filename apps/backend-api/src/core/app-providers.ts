@@ -3,7 +3,7 @@
  * binding (used by modules that don't import CoreModule — e2e test modules).
  */
 import { PrismaService } from '@wealthos/database';
-import { JwtModuleOptions } from '@nestjs/jwt';
+import { type JwtModuleOptions } from '@nestjs/jwt';
 import { type AppConfig, appConfigFactory } from './app-config';
 import { PiiCipher } from './pii-cipher';
 

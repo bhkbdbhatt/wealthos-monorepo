@@ -1,9 +1,9 @@
-import { Controller, ForbiddenException, Get, Param, Post, Query } from '@nestjs/common';
+import { Controller, ForbiddenException, Get, Param, Post } from '@nestjs/common';
 import { UserRole, type CommissionDto } from '@wealthos/shared-types';
 import { type JwtPayload } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Roles } from '../../core/roles.decorator';
-import { CommissionsService } from './commissions.service';
+import { type CommissionsService } from './commissions.service';
 
 export class CommissionsQuery {
   month?: string;

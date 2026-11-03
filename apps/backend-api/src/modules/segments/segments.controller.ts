@@ -18,8 +18,8 @@ import {
 } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Roles } from '../../core/roles.decorator';
-import { CreateSegmentDto, PreviewSegmentDto, UpdateSegmentDto } from './segments.dto';
-import { SegmentsService } from './segments.service';
+import { type CreateSegmentDto, type PreviewSegmentDto, type UpdateSegmentDto } from './segments.dto';
+import { type SegmentsService } from './segments.service';
 
 @Controller('segments')
 @Roles(UserRole.ADVISOR, UserRole.ADMIN)

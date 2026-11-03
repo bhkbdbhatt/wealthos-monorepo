@@ -1,4 +1,4 @@
-import { type AssetType, CommissionKind } from '../enums';
+import { type AssetType, type CommissionKind } from '../enums';
 import type { IsoDate, IsoTimestamp, Json } from './api';
 
 export interface CommissionCalcInput {

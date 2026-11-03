@@ -2,14 +2,14 @@
  * Mock KYC provider adapters (KYC_MOCK_MODE=true). Real vendors swap in behind
  * the same ports — signatures match production payloads to keep wiring at zero.
  */
-import { Injectable } from '@nestjs/common';
 import { createHash, randomUUID } from 'node:crypto';
-import { PiiCipher } from '../../core/pii-cipher';
+import { Injectable } from '@nestjs/common';
+import { type PiiCipher } from '../../core/pii-cipher';
 import {
-  AadhaarEsignAdapter,
-  DigiLockerAdapter,
-  PanValidationAdapter,
-  VideoKycAdapter,
+  type AadhaarEsignAdapter,
+  type DigiLockerAdapter,
+  type PanValidationAdapter,
+  type VideoKycAdapter,
 } from './kyc.ports';
 
 const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]$/;

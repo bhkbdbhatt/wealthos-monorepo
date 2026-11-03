@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import {
   BadRequestException,
   ForbiddenException,
@@ -5,10 +6,9 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { createHash } from 'node:crypto';
 import pdfParse from 'pdf-parse';
 import { type Prisma } from '@prisma/client';
-import { PrismaService } from '@wealthos/database';
+import { type PrismaService } from '@wealthos/database';
 import {
   UserRole,
   type CasUploadDto,
@@ -20,7 +20,7 @@ import {
   casTxnFingerprint,
   type ParsedCasTransaction,
 } from '../../domain/cas-parser';
-import { UsersService } from '../users/users.service';
+import { type UsersService } from '../users/users.service';
 
 export interface CasPdfFile {
   originalname: string;

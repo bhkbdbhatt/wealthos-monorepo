@@ -1,15 +1,13 @@
 import {
   ConflictException,
   ForbiddenException,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import bcrypt from 'bcryptjs';
-import { PrismaService } from '@wealthos/database';
-import { User } from '@prisma/client';
+import { type PrismaService } from '@wealthos/database';
 import { UserRole } from '@wealthos/shared-types';
-import { PiiCipher } from '../../core/pii-cipher';
+import { type PiiCipher } from '../../core/pii-cipher';
 import { toUserDto } from '../users/users.mapper';
 import { type AuthSessionDto, type RegisterClientInput } from './auth.dto';
 import { type TokenFactory } from './token.factory';

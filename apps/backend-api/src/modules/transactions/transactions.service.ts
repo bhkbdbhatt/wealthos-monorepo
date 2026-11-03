@@ -6,16 +6,16 @@
   NotFoundException,
 } from '@nestjs/common';
 import { type Prisma } from '@prisma/client';
-import { PrismaService } from '@wealthos/database';
+import { type PrismaService } from '@wealthos/database';
 import {
   UserRole,
   type CreateTransactionInput,
   type PaginatedTransactions,
   type TransactionDto,
 } from '@wealthos/shared-types';
-import { CommissionsService } from '../commissions/commissions.service';
-import { UsersService } from '../users/users.service';
-import { PortfoliosService } from '../portfolios/portfolios.service';
+import { type CommissionsService } from '../commissions/commissions.service';
+import { type UsersService } from '../users/users.service';
+import { type PortfoliosService } from '../portfolios/portfolios.service';
 
 /**
  * Transaction executing engine (Module A3 core flow):

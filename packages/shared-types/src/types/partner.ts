@@ -1,5 +1,5 @@
-import type { IsoTimestamp } from './api';
 import type { LeadStatus } from '../enums';
+import type { IsoTimestamp } from './api';
 
 export interface PartnerDto {
   id: string;

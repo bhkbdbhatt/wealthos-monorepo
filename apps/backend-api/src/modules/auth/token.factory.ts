@@ -1,5 +1,5 @@
-import { JwtService, type JwtSignOptions } from '@nestjs/jwt';
-import { UserRole, type JwtPayload } from '@wealthos/shared-types';
+import { type JwtService, type JwtSignOptions } from '@nestjs/jwt';
+import { type UserRole, type JwtPayload } from '@wealthos/shared-types';
 import { type AppConfig } from '../../core/app-config';
 import { tokenTtlFromConfig } from './token-ttl';
 

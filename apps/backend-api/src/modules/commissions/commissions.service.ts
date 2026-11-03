@@ -1,5 +1,5 @@
 ﻿import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '@wealthos/database';
+import { type PrismaService } from '@wealthos/database';
 import {
   UserRole,
   type CommissionDto,

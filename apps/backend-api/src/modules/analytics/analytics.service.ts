@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from '@wealthos/database';
+import { type PrismaService } from '@wealthos/database';
 import {
-  AssetType,
+  type AssetType,
   UserRole,
   type AdvisorAnalyticsDto,
   type AnalyticsTimePoint,

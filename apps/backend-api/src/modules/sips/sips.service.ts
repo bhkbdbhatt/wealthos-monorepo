@@ -4,12 +4,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '@wealthos/database';
+import { type PrismaService } from '@wealthos/database';
 import { UserRole, type SipDto } from '@wealthos/shared-types';
-import { nextDebitPlan, splitMonthlyMandate, validateSipSchedule } from '../../domain/sip-splitter';
-import { CommissionsService } from '../commissions/commissions.service';
-import { TransactionsService } from '../transactions/transactions.service';
-import { UsersService } from '../users/users.service';
+import { nextDebitPlan, validateSipSchedule } from '../../domain/sip-splitter';
+import { type CommissionsService } from '../commissions/commissions.service';
+import { type TransactionsService } from '../transactions/transactions.service';
+import { type UsersService } from '../users/users.service';
 
 export interface CreateSipInput {
   assetSlug: string;
@@ -77,7 +77,6 @@ export class SipsService {
     if (errors.length > 0) throw new BadRequestException(errors.join('; '));
     const asset = await this.prisma.asset.findUnique({ where: { slug: input.assetSlug } });
     if (!asset) throw new NotFoundException('Asset not found');
-    const perDebit = splitMonthlyMandate(input.monthlyAmountPaise, intervals);
     const nextRun = nextDebitPlan(
       {
         startOn: startIso,

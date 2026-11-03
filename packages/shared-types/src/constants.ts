@@ -3,7 +3,7 @@
  * Every flag has a short rationale so future removal is mechanical.
  */
 import { type AdvisorTierName } from './types/commission';
-import { AssetType, CommissionKind } from './enums';
+import { type AssetType, type CommissionKind } from './enums';
 
 export const FEATURE_FLAGS = {
   /** White-label partner landing pages (B3) */

@@ -7,8 +7,8 @@ import {
 } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Roles } from '../../core/roles.decorator';
-import { BuyBasketDto } from './baskets.dto';
-import { BasketsService } from './baskets.service';
+import { type BuyBasketDto } from './baskets.dto';
+import { type BasketsService } from './baskets.service';
 
 @Controller('baskets')
 export class BasketsController {
