@@ -3,7 +3,7 @@ import { type JwtPayload, type UserDto, UserRole } from '@wealthos/shared-types'
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
 import { Roles } from '../../core/roles.decorator';
 import { CurrentUser } from '../../core/current-user.decorator';
-import { type UsersService } from './users.service';
+import { UsersService } from './users.service';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)

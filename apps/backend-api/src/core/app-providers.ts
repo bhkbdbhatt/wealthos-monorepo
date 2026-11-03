@@ -24,11 +24,9 @@ export const piiCipherProvider = {
 };
 
 export const appJwtModuleOptionsFactory = {
-  inject: [appConfigInjectionToken],
-  useFactory: (config: AppConfig): JwtModuleOptions => ({
-    secret: config.jwtSecret,
+  useFactory: (): JwtModuleOptions => ({
+    secret: process.env['JWT_SECRET'] ?? 'local-access-secret-change-me',
     global: true,
   }),
 };
-
 

@@ -3,10 +3,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { type PrismaService } from '@wealthos/database';
+import { PrismaService } from '@wealthos/database';
 import { UserRole, type GoalDto } from '@wealthos/shared-types';
 import { goalProgress, recommendMonthlySip } from '../../domain/goal-planner';
-import { type UsersService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 import { type CreateGoalDto, type UpdateGoalDto } from './goals.dto';
 
 interface GoalRow {

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import pdfParse from 'pdf-parse';
 import { type Prisma } from '@prisma/client';
-import { type PrismaService } from '@wealthos/database';
+import { PrismaService } from '@wealthos/database';
 import {
   UserRole,
   type CasUploadDto,
@@ -20,7 +20,7 @@ import {
   casTxnFingerprint,
   type ParsedCasTransaction,
 } from '../../domain/cas-parser';
-import { type UsersService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 
 export interface CasPdfFile {
   originalname: string;

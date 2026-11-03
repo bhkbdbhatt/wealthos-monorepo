@@ -4,17 +4,8 @@ export const API_URL = process.env['NEXT_PUBLIC_API_URL'] ?? 'http://localhost:4
 export const SESSION_KEY = 'wealthos.investor.session';
 
 export interface InvestorSession {
-  user: {
-    id: string;
-    email: string;
-    fullName: string;
-    role: string;
-  };
-  tokens: {
-    accessToken: string;
-    refreshToken: string;
-    expiresInSeconds: number;
-  };
+  user: { id: string; email: string; fullName: string; role: string };
+  tokens: { accessToken: string; refreshToken: string; expiresInSeconds: number };
 }
 
 export class ApiError extends Error {
@@ -29,10 +20,6 @@ export class ApiError extends Error {
   }
 }
 
-/**
- * Read the persisted session without touching window in server rendering.
- * @returns session or null
- */
 export function readSession(): InvestorSession | null {
   if (typeof window === 'undefined') return null;
   const raw = window.localStorage.getItem(SESSION_KEY);
@@ -45,17 +32,10 @@ export function readSession(): InvestorSession | null {
   }
 }
 
-/**
- * Persist or clear the local session.
- * @param session session payload or null to sign out
- */
 export function writeSession(session: InvestorSession | null): void {
   if (typeof window === 'undefined') return;
-  if (session === null) {
-    window.localStorage.removeItem(SESSION_KEY);
-  } else {
-    window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-  }
+  if (session === null) window.localStorage.removeItem(SESSION_KEY);
+  else window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 }
 
 function authHeader(): Record<string, string> {
@@ -63,18 +43,10 @@ function authHeader(): Record<string, string> {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-/**
- * Fetch a JSON API endpoint and unwrap failures into ApiError.
- * @param path path relative to /api/v1, starting with /
- * @param init fetch overrides
- * @returns parsed response body
- */
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers);
   headers.set('Accept', 'application/json');
-  if (init.body !== undefined && !(init.body instanceof FormData)) {
-    headers.set('Content-Type', 'application/json');
-  }
+  if (init.body !== undefined && !(init.body instanceof FormData)) headers.set('Content-Type', 'application/json');
   for (const [key, value] of Object.entries(authHeader())) headers.set(key, value);
   const response = await fetch(`${API_URL}${path}`, { ...init, headers, cache: 'no-store' });
   const text = await response.text();
@@ -90,10 +62,6 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
   return payload as T;
 }
 
-/**
- * Generate an idempotency key accepted by transaction endpoints.
- * @returns UUID when available, else a random 32-char key
- */
 export function idempotencyKey(): string {
   if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) return crypto.randomUUID();
   return Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join('');

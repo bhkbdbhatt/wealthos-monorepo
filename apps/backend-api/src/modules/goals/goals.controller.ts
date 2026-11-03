@@ -3,7 +3,7 @@ import { type JwtPayload, type GoalDto, UserRole } from '@wealthos/shared-types'
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Roles } from '../../core/roles.decorator';
 import { type CreateGoalDto, type ListGoalsQuery, type UpdateGoalDto } from './goals.dto';
-import { type GoalsService } from './goals.service';
+import { GoalsService } from './goals.service';
 
 @Controller('goals')
 export class GoalsController {

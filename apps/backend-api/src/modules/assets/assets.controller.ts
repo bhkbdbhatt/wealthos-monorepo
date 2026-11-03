@@ -6,7 +6,7 @@ import {
   type ListAssetsQuery,
   type UpsertNavDto,
 } from './assets.dto';
-import { type AssetsService } from './assets.service';
+import { AssetsService } from './assets.service';
 
 /** Asset catalogue endpoints. Admins maintain; everyone else consumes. */
 @Controller('assets')

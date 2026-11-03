@@ -4,15 +4,15 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { type PrismaService } from '@wealthos/database';
+import { PrismaService } from '@wealthos/database';
 import {
   TransactionType,
   UserRole,
   type BasketDto,
   type TransactionDto,
 } from '@wealthos/shared-types';
-import { type UsersService } from '../users/users.service';
-import { type TransactionsService } from '../transactions/transactions.service';
+import { UsersService } from '../users/users.service';
+import { TransactionsService } from '../transactions/transactions.service';
 
 interface BasketRow {
   id: string;

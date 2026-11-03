@@ -1,5 +1,5 @@
 ﻿import { Injectable, NotFoundException } from '@nestjs/common';
-import { type PrismaService } from '@wealthos/database';
+import { PrismaService } from '@wealthos/database';
 import {
   type AssetType,
   type HoldingDto,
@@ -8,7 +8,7 @@ import {
 } from '@wealthos/shared-types';
 import { allocationSlices, holdingCurrentPaise, aumTotals, clampPct } from '../../domain/aum';
 import { xirr, type XirrFlow } from '../../domain/xirr';
-import { type UsersService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 /**
  * Unified portfolio viewer (Module C1/B1 feeding):
  *  - holdings with current value vs invested
@@ -165,4 +165,3 @@ export class PortfoliosService {
     return flows;
   }
 }
-

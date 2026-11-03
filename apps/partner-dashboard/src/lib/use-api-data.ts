@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { ApiError, apiFetch } from './api';
+import { readSession } from './api';
+import { partnerDemoData } from './demo-data';
 
 export interface ApiData<T> {
   data: T | null;
@@ -33,6 +35,12 @@ export function useApiData<T>(path: string | null): ApiData<T> {
     setLoading(true);
     setError(null);
     setErrorStatus(null);
+    const demo = readSession()?.tokens.accessToken === 'demo-partner-token' ? partnerDemoData(path) : null;
+    if (demo !== null) {
+      setData(demo as T);
+      setLoading(false);
+      return;
+    }
     apiFetch<T>(path)
       .then((result) => {
         if (!cancelled) setData(result);

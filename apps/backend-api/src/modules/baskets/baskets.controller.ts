@@ -8,7 +8,7 @@ import {
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Roles } from '../../core/roles.decorator';
 import { type BuyBasketDto } from './baskets.dto';
-import { type BasketsService } from './baskets.service';
+import { BasketsService } from './baskets.service';
 
 @Controller('baskets')
 export class BasketsController {

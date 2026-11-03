@@ -16,7 +16,7 @@ import {
 import { Type } from 'class-transformer';
 import { type JwtPayload, type PaginatedTransactions, type TransactionDto, TransactionType, type CreateTransactionInput } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
-import { type TransactionsService } from './transactions.service';
+import { TransactionsService } from './transactions.service';
 
 export class ExecuteTransactionDto implements CreateTransactionInput {
   /** Optional CLIENT scoping for advisor executions. */

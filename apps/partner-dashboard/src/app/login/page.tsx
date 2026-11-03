@@ -35,12 +35,14 @@ export default function LoginPage() {
 
   return (
     <main className="grid min-h-screen lg:grid-cols-2">
-      <section className="hidden bg-slate-900 p-12 text-white lg:flex lg:flex-col lg:justify-between">
+      <section className="relative hidden overflow-hidden bg-[#071713] p-12 text-white lg:flex lg:flex-col lg:justify-between">
+        <div className="absolute -right-24 top-20 h-80 w-80 rounded-full border border-emerald-400/20" />
+        <div className="absolute -right-8 top-36 h-52 w-52 rounded-full border border-emerald-400/20" />
         <p className="text-lg font-semibold">
           Wealth<span className="text-emerald-400">OS</span>
         </p>
         <div>
-          <h1 className="max-w-md text-4xl font-semibold leading-tight tracking-tight">
+          <h1 className="relative max-w-lg text-5xl font-semibold leading-[1.05] tracking-tight">
             One desk for AUM, clients and commissions.
           </h1>
           <p className="mt-4 max-w-md text-sm leading-6 text-slate-300">
@@ -50,7 +52,7 @@ export default function LoginPage() {
         </div>
         <p className="text-xs text-slate-500">Advisor workspace / API v1</p>
       </section>
-      <section className="flex items-center justify-center px-6 py-12">
+      <section className="flex items-center justify-center bg-white px-6 py-12">
         <Card className="w-full max-w-md">
           <CardContent className="p-8">
             <p className="text-sm font-medium text-emerald-700">Partner sign in</p>

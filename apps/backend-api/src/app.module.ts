@@ -4,12 +4,7 @@
  */
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtModule } from '@nestjs/jwt';
-import {
-  appConfigFactory,
-  appConfigInjectionToken,
-  appJwtModuleOptionsFactory,
-} from './core/app-providers';
+import { CoreModule } from './core/core.module';
 import { JwtAuthGuard } from './core/guards/jwt-auth.guard';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AssetsModule } from './modules/assets/assets.module';
@@ -26,10 +21,11 @@ import { SegmentsModule } from './modules/segments/segments.module';
 import { SipsModule } from './modules/sips/sips.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { UsersModule } from './modules/users/users.module';
+import { HealthController } from './health.controller';
 
 @Module({
   imports: [
-    JwtModule.registerAsync(appJwtModuleOptionsFactory),
+    CoreModule,
     AuthModule,
     UsersModule,
     AssetsModule,
@@ -46,8 +42,8 @@ import { UsersModule } from './modules/users/users.module';
     AnalyticsModule,
     JobsModule,
   ],
+  controllers: [HealthController],
   providers: [
-    { provide: appConfigInjectionToken, useFactory: appConfigFactory },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })

@@ -34,7 +34,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 py-12">
+    <main className="flex min-h-screen items-center justify-center bg-[#071713] px-6 py-12">
       <Card className="w-full max-w-md border-0">
         <CardContent className="p-8">
           <p className="text-lg font-semibold tracking-tight">

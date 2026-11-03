@@ -5,10 +5,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { type Prisma } from '@prisma/client';
-import { type PrismaService } from '@wealthos/database';
+import { PrismaService } from '@wealthos/database';
 import { KycState, type KycEventKind } from '@wealthos/shared-types';
 import { applyKycEvent } from '../../domain/kyc-state-machine';
-import { type PiiCipher } from '../../core/pii-cipher';
+import { PiiCipher } from '../../core/pii-cipher';
 import type { PrismaKycRecord } from './kyc.types';
 import {
   type AadhaarEsignAdapter,
@@ -265,4 +265,3 @@ function snapshot(record: { id: string; userId: string; state: string; panMasked
     updatedAt: new Date(record.updatedAt.getTime()),
   };
 }
-

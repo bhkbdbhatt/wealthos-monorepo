@@ -4,12 +4,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { type PrismaService } from '@wealthos/database';
+import { PrismaService } from '@wealthos/database';
 import { UserRole, type SipDto } from '@wealthos/shared-types';
 import { nextDebitPlan, validateSipSchedule } from '../../domain/sip-splitter';
-import { type CommissionsService } from '../commissions/commissions.service';
-import { type TransactionsService } from '../transactions/transactions.service';
-import { type UsersService } from '../users/users.service';
+import { CommissionsService } from '../commissions/commissions.service';
+import { TransactionsService } from '../transactions/transactions.service';
+import { UsersService } from '../users/users.service';
 
 export interface CreateSipInput {
   assetSlug: string;

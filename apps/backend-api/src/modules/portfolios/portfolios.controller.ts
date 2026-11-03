@@ -4,7 +4,7 @@ import { UserRole, type PortfolioSummary } from '@wealthos/shared-types';
 import { type JwtPayload } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Roles } from '../../core/roles.decorator';
-import { type PortfoliosService } from './portfolios.service';
+import { PortfoliosService } from './portfolios.service';
 
 export class PortfolioQuery {
   @IsOptional()

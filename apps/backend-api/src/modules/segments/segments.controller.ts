@@ -19,7 +19,7 @@ import {
 import { CurrentUser } from '../../core/current-user.decorator';
 import { Roles } from '../../core/roles.decorator';
 import { type CreateSegmentDto, type PreviewSegmentDto, type UpdateSegmentDto } from './segments.dto';
-import { type SegmentsService } from './segments.service';
+import { SegmentsService } from './segments.service';
 
 @Controller('segments')
 @Roles(UserRole.ADVISOR, UserRole.ADMIN)

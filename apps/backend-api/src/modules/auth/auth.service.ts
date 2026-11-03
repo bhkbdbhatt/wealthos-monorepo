@@ -5,9 +5,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import bcrypt from 'bcryptjs';
-import { type PrismaService } from '@wealthos/database';
+import { PrismaService } from '@wealthos/database';
 import { UserRole } from '@wealthos/shared-types';
-import { type PiiCipher } from '../../core/pii-cipher';
+import { PiiCipher } from '../../core/pii-cipher';
 import { toUserDto } from '../users/users.mapper';
 import { type AuthSessionDto, type RegisterClientInput } from './auth.dto';
 import { type TokenFactory } from './token.factory';
@@ -98,4 +98,3 @@ export function claimSubset(user: { id: string; email: string; role: string }): 
 } {
   return { id: user.id, email: user.email, role: user.role };
 }
-

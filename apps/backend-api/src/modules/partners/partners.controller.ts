@@ -14,7 +14,7 @@ import {
   type UpdateLeadStatusDto,
   type UpsertPartnerProfileDto,
 } from './partners.dto';
-import { type PartnersService } from './partners.service';
+import { PartnersService } from './partners.service';
 
 @Controller('partners')
 export class PartnersController {

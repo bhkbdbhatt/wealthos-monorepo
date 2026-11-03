@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { type PrismaService } from '@wealthos/database';
-import { type CommissionsService } from '../commissions/commissions.service';
-import { type SipsService } from '../sips/sips.service';
+import { PrismaService } from '@wealthos/database';
+import { CommissionsService } from '../commissions/commissions.service';
+import { SipsService } from '../sips/sips.service';
 
 export interface SipCronResult {
   executed: number;

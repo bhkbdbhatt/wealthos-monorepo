@@ -2,9 +2,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { type PrismaService } from '@wealthos/database';
+import { PrismaService } from '@wealthos/database';
 import { UserRole, type UserDto } from '@wealthos/shared-types';
-import { type PiiCipher } from '../../core/pii-cipher';
+import { PiiCipher } from '../../core/pii-cipher';
 import { toUserDto } from './users.mapper';
 
 /**

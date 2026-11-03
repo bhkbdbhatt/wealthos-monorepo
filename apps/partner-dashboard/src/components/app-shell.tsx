@@ -34,9 +34,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen lg:grid lg:grid-cols-[248px_1fr]">
-      <aside className="border-b border-slate-200 bg-white lg:min-h-screen lg:border-b-0 lg:border-r">
-        <div className="flex items-center justify-between px-5 py-5 lg:block">
+    <div className="min-h-screen lg:grid lg:grid-cols-[264px_1fr]">
+      <aside className="border-b border-slate-200 bg-white lg:flex lg:min-h-screen lg:flex-col lg:border-b-0 lg:border-r">
+        <div className="flex items-center justify-between px-6 py-6 lg:block">
           <Link href="/dashboard" className="text-lg font-semibold tracking-tight text-slate-900">
             Wealth<span className="text-emerald-700">OS</span>
           </Link>
@@ -100,7 +100,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             Sign out
           </button>
         </header>
-        <main className="mx-auto max-w-6xl px-5 py-6 lg:px-8 lg:py-8">{children}</main>
+        <main className="mx-auto max-w-[1480px] px-5 py-6 lg:px-10 lg:py-9">{children}</main>
       </div>
     </div>
   );
