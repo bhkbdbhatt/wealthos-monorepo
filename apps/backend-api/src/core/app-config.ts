@@ -12,6 +12,7 @@ export interface AppConfig {
   piiEncryptionKey: string;
   corsOrigins: string[];
   kycMockMode: boolean;
+  localDemoMode: boolean;
   requestBodyLimit: string;
   requestTimeoutMs: number;
   shutdownTimeoutMs: number;
@@ -28,6 +29,7 @@ export const CONFIG_KEYS = {
   piiEncryptionKey: 'PII_ENCRYPTION_KEY',
   corsOrigins: 'CORS_ORIGIN',
   kycMockMode: 'KYC_MOCK_MODE',
+  localDemoMode: 'LOCAL_DEMO_MODE',
   requestBodyLimit: 'REQUEST_BODY_LIMIT',
   requestTimeoutMs: 'REQUEST_TIMEOUT_MS',
   shutdownTimeoutMs: 'SHUTDOWN_TIMEOUT_MS',
@@ -86,6 +88,7 @@ export function readAppConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     piiEncryptionKey: piiKey,
     corsOrigins: corsRaw.split(',').map((s) => s.trim()).filter(Boolean),
     kycMockMode: (env[CONFIG_KEYS.kycMockMode] ?? 'true') === 'true',
+    localDemoMode: (env[CONFIG_KEYS.localDemoMode] ?? 'false') === 'true',
     requestBodyLimit: env[CONFIG_KEYS.requestBodyLimit] ?? '1mb',
     requestTimeoutMs,
     shutdownTimeoutMs,

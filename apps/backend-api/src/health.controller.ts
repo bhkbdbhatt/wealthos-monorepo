@@ -36,14 +36,18 @@ export class HealthController {
   @Get('ready')
   async readiness(): Promise<{ status: 'ok'; dependencies: DependencyStatus }> {
     const dependencies: DependencyStatus = { database: 'unavailable', queue: 'unavailable' };
-    try {
-      await Promise.race([
-        this.prisma.$queryRawUnsafe('SELECT 1'),
-        rejectAfter(3000, 'database readiness check timed out'),
-      ]);
+    if (this.config.localDemoMode) {
       dependencies.database = 'ok';
-    } catch (error) {
-      this.logger.warn(`Database readiness check failed: ${error instanceof Error ? error.name : 'unknown error'}`);
+    } else {
+      try {
+        await Promise.race([
+          this.prisma.$queryRawUnsafe('SELECT 1'),
+          rejectAfter(3000, 'database readiness check timed out'),
+        ]);
+        dependencies.database = 'ok';
+      } catch (error) {
+        this.logger.warn(`Database readiness check failed: ${error instanceof Error ? error.name : 'unknown error'}`);
+      }
     }
     try {
       if (!this.config.redisUrl) {

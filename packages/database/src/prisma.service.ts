@@ -8,7 +8,11 @@ import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   async onModuleInit(): Promise<void> {
-    await this.$connect();
+    try {
+      await this.$connect();
+    } catch (error) {
+      if (process.env.LOCAL_DEMO_MODE !== 'true') throw error;
+    }
   }
 
   async onModuleDestroy(): Promise<void> {

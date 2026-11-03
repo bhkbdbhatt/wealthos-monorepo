@@ -49,7 +49,7 @@ async function bootstrap(): Promise<void> {
     next();
   });
   await app.listen(config.port);
-  app.get(Logger).log(`WealthOS API listening on port ${config.port}`);
+  new Logger('Bootstrap').log(`WealthOS API listening on port ${config.port}`);
   let shutdownStarted = false;
   const gracefulShutdown = (): void => {
     if (shutdownStarted) return;

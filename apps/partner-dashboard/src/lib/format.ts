@@ -63,7 +63,8 @@ export function formatDate(value: string | null | undefined): string {
  * @param value enum string
  * @returns title-cased label
  */
-export function label(value: string): string {
+export function label(value: string | null | undefined): string {
+  if (!value) return '-';
   return value
     .toLowerCase()
     .split('_')

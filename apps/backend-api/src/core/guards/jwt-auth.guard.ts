@@ -1,7 +1,7 @@
 import { type CanActivate, type ExecutionContext, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { type JwtService } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { UserRole } from '@wealthos/shared-types';
-import { type Reflector } from '@nestjs/core';
+import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../public.decorator';
 import { ROLES_KEY } from '../roles.decorator';
 
@@ -11,9 +11,10 @@ import { ROLES_KEY } from '../roles.decorator';
  */
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
+  private readonly reflector = new Reflector();
+
   constructor(
     private readonly jwtService: JwtService,
-    private readonly reflector: Reflector,
   ) {}
 
   canActivate(context: ExecutionContext): boolean {

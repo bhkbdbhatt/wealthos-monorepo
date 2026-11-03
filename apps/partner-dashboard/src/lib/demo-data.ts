@@ -41,9 +41,9 @@ export function partnerDemoData(path: string): unknown | null {
     { id: 'lead-3', name: 'Rina Joshi', email: 'rina.joshi@example.com', phone: '9822334455', status: 'QUALIFIED', createdAt: '2026-10-30T11:10:00Z' },
   ];
   if (path === '/commissions') return [
-    { id: 'commission-1', type: 'UPFRONT', amountPaise: 24500000, status: 'PAID', assetName: 'Nifty 50 Index Fund', createdAt: '2026-10-28T00:00:00Z' },
-    { id: 'commission-2', type: 'TRAIL', amountPaise: 1820000, status: 'PENDING', assetName: 'WealthOS Balanced Basket', createdAt: '2026-10-31T00:00:00Z' },
-    { id: 'commission-3', type: 'TRAIL', amountPaise: 1640000, status: 'PAID', assetName: 'Quality Equity Fund', createdAt: '2026-10-15T00:00:00Z' },
+    { id: 'commission-1', advisorId: 'advisor-1', clientId: 'client-1', transactionId: 'transaction-1', assetType: 'MUTUAL_FUND', kind: 'UPFRONT', rateBps: 100, amountPaise: 24500000, periodMonth: null, createdAt: '2026-10-28T00:00:00Z' },
+    { id: 'commission-2', advisorId: 'advisor-1', clientId: 'client-2', transactionId: null, assetType: 'EQUITY', kind: 'TRAIL', rateBps: 50, amountPaise: 1820000, periodMonth: '2026-10', createdAt: '2026-10-31T00:00:00Z' },
+    { id: 'commission-3', advisorId: 'advisor-1', clientId: 'client-3', transactionId: null, assetType: 'MUTUAL_FUND', kind: 'TRAIL', rateBps: 50, amountPaise: 1640000, periodMonth: '2026-10', createdAt: '2026-10-15T00:00:00Z' },
   ];
   return null;
 }
