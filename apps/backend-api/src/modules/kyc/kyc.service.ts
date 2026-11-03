@@ -9,7 +9,7 @@ import type { PrismaKycRecord } from './kyc.types';
 import { PrismaService } from '@wealthos/database';
 import { KycState, type KycEventKind } from '@wealthos/shared-types';
 import { applyKycEvent } from '../../domain/kyc-state-machine';
-import { PiiCipher } from '../../../core/pii-cipher';
+import { PiiCipher } from '../../core/pii-cipher';
 import {
   AadhaarEsignAdapter,
   DigiLockerAdapter,
@@ -235,7 +235,7 @@ export class KycService {
             kind: 'STATE_TRANSITION',
             fromState: current,
             toState: next,
-            meta: data as Record<string, unknown>,
+            meta: data as unknown as Prisma.InputJsonValue,
           },
         },
       },

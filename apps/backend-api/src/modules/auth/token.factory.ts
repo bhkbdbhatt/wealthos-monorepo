@@ -1,6 +1,6 @@
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, type JwtSignOptions } from '@nestjs/jwt';
 import { UserRole, type JwtPayload } from '@wealthos/shared-types';
-import { type AppConfig } from '../../../core/app-config';
+import { type AppConfig } from '../../core/app-config';
 import { tokenTtlFromConfig } from './token-ttl';
 
 export interface TokenPair {
@@ -45,10 +45,12 @@ export class TokenFactory {
       email: user.email,
       role: user.role as UserRole,
     };
-    const accessToken = this.jwt.sign(principal, { expiresIn: this.ttl.accessExpiresIn });
+    const accessToken = this.jwt.sign(principal, {
+      expiresIn: this.ttl.accessExpiresIn as JwtSignOptions['expiresIn'],
+    });
     const refreshToken = this.jwt.sign(principal, {
       secret: this.refreshSecret,
-      expiresIn: this.ttl.refreshExpiresIn,
+      expiresIn: this.ttl.refreshExpiresIn as JwtSignOptions['expiresIn'],
     });
     return { accessToken, refreshToken, expiresInSeconds: this.accessTtlSeconds() };
   }

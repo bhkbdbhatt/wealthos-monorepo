@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { type JwtPayload } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
+import { Public } from '../../core/public.decorator';
 import { AuthService } from './auth.service';
 import { type AuthSessionDto, type ClientRegisterDto, type LoginDto, type RefreshDto } from './auth.dto';
 
@@ -10,6 +11,7 @@ export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
   /** @param dto email/password credentials */
+  @Public()
   @Post('login')
   async login(@Body() dto: LoginDto): Promise<AuthSessionDto> {
     return this.auth.login(dto.email, dto.password);
@@ -19,6 +21,7 @@ export class AuthController {
    * Self-service CLIENT registration. Advisors/Admins are provisioned by ADMIN flows.
    * @param dto registration body
    */
+  @Public()
   @Post('register/client')
   async registerClient(@Body() dto: ClientRegisterDto): Promise<AuthSessionDto> {
     return this.auth.registerClient({
@@ -38,6 +41,7 @@ export class AuthController {
   }
 
   /** @param dto refresh token */
+  @Public()
   @Post('refresh')
   async refresh(@Body() dto: RefreshDto): Promise<AuthSessionDto> {
     return this.auth.refresh(dto.refreshToken);

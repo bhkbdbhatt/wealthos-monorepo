@@ -19,6 +19,7 @@ import { BasketsModule } from './modules/baskets/baskets.module';
 import { CasModule } from './modules/cas/cas.module';
 import { CommissionsModule } from './modules/commissions/commissions.module';
 import { GoalsModule } from './modules/goals/goals.module';
+import { JobsModule } from './modules/jobs/jobs.module';
 import { KycModule } from './modules/kyc/kyc.module';
 import { PartnersModule } from './modules/partners/partners.module';
 import { PortfoliosModule } from './modules/portfolios/portfolios.module';
@@ -44,6 +45,7 @@ import { UsersModule } from './modules/users/users.module';
     GoalsModule,
     PartnersModule,
     AnalyticsModule,
+    JobsModule,
   ],
   providers: [
     { provide: appConfigInjectionToken, useFactory: appConfigFactory },

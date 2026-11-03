@@ -8,13 +8,15 @@ import {
   IsString,
   IsUUID,
   Max,
+  MaxLength,
   Min,
-  Type,
+  MinLength,
   ValidateNested,
 } from 'class-validator';
-import { type JwtPayload, type PaginatedTransactions, type TransactionDto, TransactionType } from '@wealthos/shared-types';
+import { Type } from 'class-transformer';
+import { type JwtPayload, type PaginatedTransactions, type TransactionDto, TransactionType, type CreateTransactionInput } from '@wealthos/shared-types';
 import { CurrentUser } from '../../core/current-user.decorator';
-import { CreateTransactionInput } from '@wealthos/shared-types';
+import { TransactionsService } from './transactions.service';
 
 export class ExecuteTransactionDto implements CreateTransactionInput {
   /** Optional CLIENT scoping for advisor executions. */

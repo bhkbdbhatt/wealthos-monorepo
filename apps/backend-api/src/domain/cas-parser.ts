@@ -37,7 +37,7 @@ const MONTHS: Record<string, number> = {
 const SCHEME_LINE = /(?:Scheme(?:\s*Name)?\s*:|^)\s*(?<name>[A-Z][^\(]{10,90}?)(?:\s*\((?<code>[A-Z0-9]{4,12})\))?\s*$/;
 
 const TXN_LINE =
-  /^(?<date>\d{1,2}-[A-Za-z]{3}-\d{4})\s+(?<desc>[A-Za-z][A-Za-z ()\/\-\.\d]{4,60}?)\s+(?<units>[\d,]+\.\d{3,})\s+(?<nav>[\d,]+\.\d{2,4})\s+(?<amount>[\d,]+\.\d{2})\s*$/;
+  /^(?<date>\d{1,2}-[A-Za-z]{3}-\d{4})\s+(?<desc>[A-Za-z][A-Za-z ()\/\-\.\d]{4,60}?)\s+(?<units>[\d,]+\.\d{2,})\s+(?<nav>[\d,]+\.\d{2,4})\s+(?<amount>[\d,]+\.\d{2})\s*$/;
 
 function classify(desc: string): ParsedCasTransaction['kind'] | null {
   const cleaned = desc.toLowerCase();

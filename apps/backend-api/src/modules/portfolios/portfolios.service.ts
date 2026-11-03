@@ -5,10 +5,9 @@ import {
   type HoldingDto,
   type PortfolioSummary,
   UserRole,
-  type XirrCashflow,
 } from '@wealthos/shared-types';
 import { allocationSlices, holdingCurrentPaise, aumTotals, clampPct } from '../../domain/aum';
-import { xirr } from '../../domain/xirr';
+import { xirr, type XirrFlow } from '../../domain/xirr';
 import { UsersService } from '../users/users.service';
 /**
  * Unified portfolio viewer (Module C1/B1 feeding):
@@ -146,22 +145,21 @@ export class PortfoliosService {
   private async buildXirrFlows(
     owner: string,
     rows: Array<{ assetId: string; units: number; currentNavPaise: number }>,
-  ): Promise<XirrCashflow[]> {
+  ): Promise<XirrFlow[]> {
     const txns = await this.prisma.transaction.findMany({
       where: { userId: owner, status: 'EXECUTED' },
       include: { asset: true },
       orderBy: { executedAt: 'asc' },
     });
-    const flows: XirrCashflow[] = txns.map((t) => ({
+    const flows: XirrFlow[] = txns.map((t) => ({
       date: (t.executedAt ?? t.createdAt).toISOString().slice(0, 10),
-      amountPaise:
-        t.type === 'SELL' ? t.amountPaise : -Math.abs(t.amountPaise),
+      amount: t.type === 'SELL' ? t.amountPaise : -Math.abs(t.amountPaise),
     }));
     const liquidationPaise = rows.reduce((s, r) => s + Math.round(r.units * r.currentNavPaise), 0);
     if (liquidationPaise > 0) {
       flows.push({
         date: new Date().toISOString().slice(0, 10),
-        amountPaise: liquidationPaise,
+        amount: liquidationPaise,
       });
     }
     return flows;

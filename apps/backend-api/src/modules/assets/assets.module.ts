@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CoreModule } from '../../../core/core.module';
+import { CoreModule } from '../../core/core.module';
 import { AssetsController } from './assets.controller';
 import { AssetsService } from './assets.service';
 

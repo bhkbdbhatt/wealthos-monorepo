@@ -33,7 +33,7 @@ const base = tseslint.config(
         "error",
         { prefer: "type-imports", fixStyle: "inline-type-imports" },
       ],
-      import/order: [
+      "import/order": [
         "error",
         {
           "newlines-between": "never",
@@ -41,7 +41,7 @@ const base = tseslint.config(
         },
       ],
       eqeqeq: "error",
-      prefer-const: "error",
+      "prefer-const": "error",
     },
   },
   {

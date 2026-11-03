@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CoreModule } from '../../../core/core.module';
+import { CoreModule } from '../../core/core.module';
 import { AadhaarEsignAdapter, DigiLockerAdapter, PanValidationAdapter, VideoKycAdapter } from './kyc.ports';
 import { KycController } from './kyc.controller';
 import { KycService } from './kyc.service';

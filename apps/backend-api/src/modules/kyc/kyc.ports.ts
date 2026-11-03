@@ -7,11 +7,11 @@ export interface PanValidationResult {
   reason?: string;
 }
 
-export interface PanValidationAdapter {
+export abstract class PanValidationAdapter {
   /**
    * @param pan 10-char PAN, uppercase alphanumeric
    */
-  validate(pan: string): Promise<PanValidationResult>;
+  abstract validate(pan: string): Promise<PanValidationResult>;
 }
 
 export interface DigiLockerSyncResult {
@@ -20,9 +20,9 @@ export interface DigiLockerSyncResult {
   issuedAt: string;
 }
 
-export interface DigiLockerAdapter {
+export abstract class DigiLockerAdapter {
   /** Emulates the DigiLocker webhook document-sync verification. */
-  syncDocuments(userId: string): Promise<DigiLockerSyncResult>;
+  abstract syncDocuments(userId: string): Promise<DigiLockerSyncResult>;
 }
 
 export interface AadhaarEsignResult {
@@ -30,9 +30,9 @@ export interface AadhaarEsignResult {
   esignRef: string;
 }
 
-export interface AadhaarEsignAdapter {
+export abstract class AadhaarEsignAdapter {
   /** Returns a signed e-Sign reference (mock provider in dev). */
-  esign(userId: string, maskedAadhaar: string): Promise<AadhaarEsignResult>;
+  abstract esign(userId: string, maskedAadhaar: string): Promise<AadhaarEsignResult>;
 }
 
 export interface VideoKycScheduled {
@@ -41,7 +41,7 @@ export interface VideoKycScheduled {
   scheduledAt: string;
 }
 
-export interface VideoKycAdapter {
-  schedule(userId: string): Promise<VideoKycScheduled>;
-  complete(webhookToken: string): Promise<{ ok: boolean; decision: 'APPROVED' | 'REJECTED' }>;
+export abstract class VideoKycAdapter {
+  abstract schedule(userId: string): Promise<VideoKycScheduled>;
+  abstract complete(webhookToken: string): Promise<{ ok: boolean; decision: 'APPROVED' | 'REJECTED' }>;
 }

@@ -1,5 +1,5 @@
 /** Token TTL constants kept in one place. */
-import { type AppConfig } from '../../../core/app-config';
+import { type AppConfig } from '../../core/app-config';
 
 export interface TokenTtlConfig {
   accessExpiresIn: string;

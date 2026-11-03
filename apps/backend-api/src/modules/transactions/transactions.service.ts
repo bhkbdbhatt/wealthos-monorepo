@@ -13,6 +13,7 @@ import {
   type PaginatedTransactions,
   type TransactionDto,
 } from '@wealthos/shared-types';
+import { CommissionsService } from '../commissions/commissions.service';
 import { UsersService } from '../users/users.service';
 import { PortfoliosService } from '../portfolios/portfolios.service';
 
@@ -29,6 +30,7 @@ export class TransactionsService {
     private readonly prisma: PrismaService,
     private readonly users: UsersService,
     private readonly portfolios: PortfoliosService,
+    private readonly commissions: CommissionsService,
   ) {}
 
   /**
@@ -112,6 +114,9 @@ export class TransactionsService {
       }
       throw new BadRequestException('Use /sips for SIP-type transactions');
     });
+    if (executed.type === 'BUY' || executed.type === 'SIP') {
+      await this.commissions.recordUpfront(executed.id);
+    }
     if (input.type === 'SELL' && target && input.switchToAssetSlug && executed.id) {
       // SWITCH: after the sell leg, create the buy leg atomically into the target asset.
       await this.executeSwitchLeg(executed, owned, target, input.amountPaise);

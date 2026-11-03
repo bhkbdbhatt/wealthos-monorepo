@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '@wealthos/database';
 import { UserRole, type SipDto } from '@wealthos/shared-types';
 import { nextDebitPlan, splitMonthlyMandate, validateSipSchedule } from '../../domain/sip-splitter';
+import { CommissionsService } from '../commissions/commissions.service';
 import { TransactionsService } from '../transactions/transactions.service';
 import { UsersService } from '../users/users.service';
 
@@ -54,6 +55,7 @@ export class SipsService {
     private readonly prisma: PrismaService,
     private readonly users: UsersService,
     private readonly transactions: TransactionsService,
+    private readonly commissions: CommissionsService,
   ) {}
 
   /**
@@ -99,6 +101,7 @@ export class SipsService {
         nextRunOn: nextRun ? new Date(`${nextRun.dateIso}T00:00:00.000Z`) : null,
       },
     });
+    await this.scheduleInstances(sip.id, intervals);
     return this.toDto(sip, asset);
   }
 
@@ -195,6 +198,8 @@ export class SipsService {
         return txn.id;
       });
       await this.advanceNextRun(instance.sip);
+      await this.scheduleInstances(instance.sip.id, 1);
+      await this.commissions.recordUpfront(transactionId);
       return { status: 'EXECUTED', transactionId };
     } catch {
       await this.prisma.sipInstance.update({ where: { id: instance.id }, data: { status: 'FAILED' } });

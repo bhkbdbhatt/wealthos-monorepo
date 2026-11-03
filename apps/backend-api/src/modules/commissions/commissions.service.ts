@@ -36,7 +36,18 @@ export class CommissionsService {
   async recordUpfront(transactionId: string): Promise<CommissionDto | null> {
     const txn = await this.prisma.transaction.findUnique({
       where: { id: transactionId },
-      include: { user: { select: { id: true, email: true, role: true, advisorId: true }, include: { advisor: { select: { id: true, tier: true } } } } },
+      include: {
+        asset: { select: { type: true } },
+        user: {
+          select: {
+            id: true,
+            email: true,
+            role: true,
+            advisorId: true,
+            advisor: { select: { id: true, tier: true } },
+          },
+        },
+      },
     });
     if (!txn) return null;
     if (txn.type !== 'BUY' && txn.type !== 'SIP') return null;
@@ -46,7 +57,12 @@ export class CommissionsService {
       return null;
     }
     const tier = (await this.prisma.user.findUnique({ where: { id: advisorId }, select: { tier: true } }))?.tier ?? 'BRONZE';
-    const calc = computeCommission('UPFRONT', txn.asset.type, tier as AdvisorTier, txn.amountPaise);
+    const calc = computeCommission(
+      'UPFRONT' as CommissionKind,
+      txn.asset.type as Parameters<typeof computeCommission>[1],
+      tier as AdvisorTier,
+      txn.amountPaise,
+    );
     const row = await this.prisma.commission.upsert({
       where: { advisorId_periodKey: { advisorId, periodKey: `T:${txn.id}` } },
       create: {
@@ -99,7 +115,13 @@ export class CommissionsService {
       }
       for (const [clientId, bucket] of perClient.entries()) {
         const dominant = [...bucket.types.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'MUTUAL_FUND';
-        const calc = computeCommission('TRAIL', dominant as Parameters<typeof computeCommission>[1], advisor.tier as AdvisorTier, bucket.value, monthIso);
+        const calc = computeCommission(
+          'TRAIL' as CommissionKind,
+          dominant as Parameters<typeof computeCommission>[1],
+          advisor.tier as AdvisorTier,
+          bucket.value,
+          monthIso,
+        );
         if (calc.amountPaise <= 0) continue;
         await this.prisma.commission.upsert({
           where: { advisorId_periodKey: { advisorId: advisor.id, periodKey: `M:${monthIso}@${clientId}` } },
@@ -107,7 +129,7 @@ export class CommissionsService {
             advisorId: advisor.id,
             clientId,
             transactionId: null,
-            assetType: dominant,
+            assetType: dominant as Parameters<typeof computeCommission>[1],
             kind: 'TRAIL',
             rateBps: calc.rateBps,
             amountPaise: calc.amountPaise,

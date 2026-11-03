@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 import { PrismaService } from '@wealthos/database';
 import { User } from '@prisma/client';
 import { UserRole } from '@wealthos/shared-types';
-import { PiiCipher } from '../../../core/pii-cipher';
+import { PiiCipher } from '../../core/pii-cipher';
 import { toUserDto } from '../users/users.mapper';
 import { type AuthSessionDto, type RegisterClientInput } from './auth.dto';
 import { type TokenFactory } from './token.factory';

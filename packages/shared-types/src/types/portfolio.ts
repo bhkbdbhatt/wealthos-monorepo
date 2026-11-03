@@ -75,6 +75,8 @@ export interface CreateTransactionInput {
   amountPaise: number;
   idempotencyKey?: string;
   switchToAssetSlug?: string;
+  /** Advisor/Admin executions may target an advised client. */
+  targetUserId?: string;
 }
 
 export interface SipDto {

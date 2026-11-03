@@ -87,6 +87,7 @@ export function appConfigFactory(): AppConfig {
 }
 
 export const APP_CONFIG_TOKEN = 'APP_CONFIG' as const;
+export const appConfigInjectionToken = APP_CONFIG_TOKEN;
 
 /** Roles accepted by the @Roles() guard, mapped 1:1 to UserRole. */
 export const API_ROLES = UserRole;

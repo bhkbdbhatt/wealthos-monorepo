@@ -1,5 +1,4 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { UserRole } from '@wealthos/shared-types';
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
 import { Roles } from '../../core/roles.decorator';
 import { type JwtPayload, type UserDto, UserRole } from '@wealthos/shared-types';

@@ -3,6 +3,7 @@ import { UserRole } from '@wealthos/shared-types';
 import { type JwtPayload } from '@wealthos/shared-types';
 import { IsOptional, IsString, Matches } from 'class-validator';
 import { CurrentUser } from '../../core/current-user.decorator';
+import { Public } from '../../core/public.decorator';
 import { Roles } from '../../core/roles.decorator';
 import { KycService } from './kyc.service';
 
@@ -69,6 +70,7 @@ export class KycController {
   }
 
   /** @param dto vendor webhook body */
+  @Public()
   @Post('webhook/video-kyc')
   async webhookVideo(@Body() dto: VideoKycWebhookDto): Promise<unknown> {
     return this.kyc.completeVideoKyc(dto.vendorRef, dto.token ?? '');

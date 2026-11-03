@@ -4,7 +4,7 @@
  */
 import { Injectable } from '@nestjs/common';
 import { createHash, randomUUID } from 'node:crypto';
-import { PiiCipher } from '../../../core/pii-cipher';
+import { PiiCipher } from '../../core/pii-cipher';
 import {
   AadhaarEsignAdapter,
   DigiLockerAdapter,

@@ -57,9 +57,9 @@ export function formatPaiseCompact(paise: number): string {
   if (!Number.isInteger(paise)) throw new RangeError('formatPaiseCompact expects integer paise');
   const sign = paise < 0 ? '-' : '';
   const abs = Math.abs(paise);
-  const crore = abs / 10_000_000_0;
-  const lakh = abs / 1_000_00;
-  const thousand = abs / 1_000;
+  const crore = abs / 1_000_000_000;
+  const lakh = abs / 10_000_000;
+  const thousand = abs / 100_000;
   if (crore >= 1) return `${sign}₹${crore.toFixed(2)} Cr`;
   if (lakh >= 1) return `${sign}₹${lakh.toFixed(1)} L`;
   if (thousand >= 1) return `${sign}₹${thousand.toFixed(1)} k`;
